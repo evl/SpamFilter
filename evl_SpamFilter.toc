@@ -1,0 +1,5 @@
+## Interface: 30200
+## Title: Evl's Spam Filter
+## Author: Evl
+
+evl_SpamFilter.lua
