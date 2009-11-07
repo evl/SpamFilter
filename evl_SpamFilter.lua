@@ -4,6 +4,8 @@ local supress
 local whitelist = {
 	"/",
 	"Requires",
+	"Jeweler's Gems",
+	"One or more items from set",
 	"full",
 	"fish",
 	"lance",
