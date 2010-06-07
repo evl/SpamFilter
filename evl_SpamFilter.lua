@@ -1,28 +1,45 @@
-
--- http://www.wowwiki.com/WoW_Constants/Errors
-local blacklist = {
-	[ERR_ABILITY_COOLDOWN] = true,
-	--[ERR_OUT_OF_RANGE] = true,
-	[ERR_NO_ATTACK_TARGET] = true,
-	[ERR_ITEM_COOLDOWN] = true,
-	[ERR_SPELL_COOLDOWN] = true,
-	[OUT_OF_ENERGY] = true,
-	[SPELL_FAILED_NO_COMBO_POINTS] = true,
-	[SPELL_FAILED_SPELL_IN_PROGRESS] = true,
-	--[SPELL_FAILED_TARGETS_DEAD] = true,
-}
-
 local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
+
 UIErrorsFrame:SetScript("OnEvent", function(self, event, message, ...)
-	if event == "UI_ERROR_MESSAGE" and not blacklist[message] then
-		originalOnEvent(self, event, message, ...)
-	end	
+	if event == "UI_ERROR_MESSAGE" and evl_SpamFilterDB[message] then
+		return
+	end
+	
+	return originalOnEvent(self, event, message, ...)
 end
 )
 
+SlashCmdList["EVL_SPAMFILTER"] = function(text)
+	if text == "reset" then
+		evl_SpamFilterDB = {}
+		print("SpamFilter: Database reset")
+	elseif #text > 0 then
+		if evl_SpamFilterDB[text] then
+	    evl_SpamFilterDB[text] = nil
+	    print("SpamFilter: Removed", text, "from database")
+		else
+	    evl_SpamFilterDB[text] = true
+	    print("SpamFilter: Added", text, "to database")
+		end
+	else
+		if next(evl_SpamFilterDB) then
+    	print("SpamFilter:")
+
+	    for value in pairs(evl_SpamFilterDB) do
+				print("\t", value)
+	    end
+		else
+	    print("SpamFilter: Database is empty")
+		end
+	end
+end
+
+SLASH_EVL_SPAMFILTER1 = "/spamfilter"
+SLASH_EVL_SPAMFILTER2 = "/sf"
+
 local soundCVar = "Sound_EnableSFX"
 local soundEnabled
-SlashCmdList['EVL_SOUND'] = function(text, editBox)
+SlashCmdList["EVL_SOUND"] = function(text)
 	if text == "0" then
 		soundEnabled = GetCVar(soundCVar)
 		SetCVar(soundCVar, 0)
@@ -32,3 +49,4 @@ SlashCmdList['EVL_SOUND'] = function(text, editBox)
 end
 
 SLASH_EVL_SOUND1 = "/sound"
+SLASH_EVL_SOUND2 = "/sfx"

@@ -1,5 +1,6 @@
 ## Interface: 30300
 ## Title: Evl's Spam Filter
 ## Author: Evl
+## SavedVariablesPerCharacter: evl_SpamFilterDB
 
 evl_SpamFilter.lua
