@@ -1,3 +1,5 @@
+evl_SpamFilterDB = evl_SpamFilterDB or {}
+
 local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
 
 UIErrorsFrame:SetScript("OnEvent", function(self, event, message, ...)
@@ -26,7 +28,7 @@ SlashCmdList["EVL_SPAMFILTER"] = function(text)
     	print("SpamFilter:")
 
 	    for value in pairs(evl_SpamFilterDB) do
-				print("\t", value)
+				print("    ", value)
 	    end
 		else
 	    print("SpamFilter: Database is empty")
