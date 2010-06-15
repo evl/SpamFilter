@@ -1,11 +1,14 @@
 evl_SpamFilterDB = evl_SpamFilterDB or {}
 
+local lastMessage
 local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
 
 UIErrorsFrame:SetScript("OnEvent", function(self, event, message, ...)
 	if event == "UI_ERROR_MESSAGE" and evl_SpamFilterDB[message] then
 		return
 	end
+	
+	lastMessage = message
 	
 	return originalOnEvent(self, event, message, ...)
 end
@@ -20,6 +23,10 @@ SlashCmdList["EVL_SPAMFILTER"] = function(text)
 	    evl_SpamFilterDB[text] = nil
 	    print("SpamFilter: Removed", text, "from database")
 		else
+			if text == "last" or text == "previous" then
+				text = lastMessage
+			end
+			
 	    evl_SpamFilterDB[text] = true
 	    print("SpamFilter: Added", text, "to database")
 		end
