@@ -19,16 +19,16 @@ SlashCmdList["EVL_SPAMFILTER"] = function(text)
 		evl_SpamFilterDB = {}
 		print("SpamFilter: Database reset")
 	elseif #text > 0 then
+		if text == "last" or text == "previous" then
+			text = lastMessage
+		end
+		
 		if evl_SpamFilterDB[text] then
 	    evl_SpamFilterDB[text] = nil
-	    print("SpamFilter: Removed", text, "from database")
+	    print("SpamFilter: Removed '" .. text .. "' from database")
 		else
-			if text == "last" or text == "previous" then
-				text = lastMessage
-			end
-			
 	    evl_SpamFilterDB[text] = true
-	    print("SpamFilter: Added", text, "to database")
+	    print("SpamFilter: Added '" .. text .. "' to database")
 		end
 	else
 		if next(evl_SpamFilterDB) then
